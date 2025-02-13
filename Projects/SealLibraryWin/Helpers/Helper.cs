@@ -31,6 +31,7 @@ using System.Data.SQLite;
 using DocumentFormat.OpenXml.Bibliography;
 using Azure.Identity;
 using Azure.Storage.Blobs;
+using FirebirdSql.Data.FirebirdClient;
 
 namespace Seal.Helpers
 {
@@ -855,6 +856,13 @@ namespace Seal.Helpers
                 command.CommandText = sql;
                 adapter = new SQLiteDataAdapter(command);
             }
+            else if (connection is FbConnection)
+            {
+                FbCommand command = ((FbConnection)connection).CreateCommand();
+                command.CommandTimeout = 0;
+                command.CommandText = sql;
+                adapter = new FbDataAdapter(command);
+            }
             else
             {
                 OleDbCommand command = ((OleDbConnection)connection).CreateCommand();
@@ -931,6 +939,10 @@ namespace Seal.Helpers
             {
                 connection = new NpgsqlConnection(connectionString);
             }
+            else if (connectionType == ConnectionType.Firebird)
+            {
+                connection = new FbConnection(connectionString);
+            }
             else if (connectionType == ConnectionType.SQLite)
             {
                 connection = new SQLiteConnection(connectionString);
@@ -990,6 +1002,10 @@ namespace Seal.Helpers
             else if (connectionString.ToLower().Contains("sqlite"))
             {
                 result = DatabaseType.SQLite;
+            }
+            else if (connectionString.ToLower().Contains("firebird"))
+            {
+                result = DatabaseType.Firebird;
             }
 
             return result;

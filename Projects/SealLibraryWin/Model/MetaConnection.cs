@@ -175,6 +175,10 @@ namespace Seal.Model
                 {
                     DatabaseType = DatabaseType.SQLite;
                 }
+                else if (_connectionType == ConnectionType.Firebird && DatabaseType != DatabaseType.Firebird)
+                {
+                    DatabaseType = DatabaseType.Firebird;
+                }
                 else if ((_connectionType == ConnectionType.MSSQLServer || _connectionType == ConnectionType.MSSQLServerMicrosoft) && DatabaseType != DatabaseType.MSSQLServer)
                 {
                     DatabaseType = DatabaseType.MSSQLServer;
@@ -347,6 +351,10 @@ namespace Seal.Model
             {
                 result = Helper.GetOleDbConnectionString(SQLiteConnectionString, userName, password);
             }
+            else if (ConnectionType == ConnectionType.Firebird)
+            {
+                result = Helper.GetOleDbConnectionString(ConnectionString, userName, password);
+            }
             else
             {
                 result = Helper.GetOleDbConnectionString(ConnectionString, userName, password);
@@ -384,7 +392,7 @@ namespace Seal.Model
             else if (ConnectionType == ConnectionType.SQLite)
             {
                 SQLiteConnectionString = connectionString;
-            }
+            }          
             else
             {
                 ConnectionString = connectionString;

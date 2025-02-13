@@ -22,6 +22,7 @@ using System.Threading.Tasks;
 using Oracle.ManagedDataAccess.Client;
 using Npgsql;
 using System.Data.SQLite;
+using FirebirdSql.Data.FirebirdClient;
 
 #if WINDOWS
 using Seal.Forms;
@@ -3154,6 +3155,7 @@ model.ResultTable = query2.CopyToDataTable2();
                         else if (connection is OracleConnection) _command = ((OracleConnection)connection).CreateCommand();
                         else if (connection is NpgsqlConnection) _command = ((NpgsqlConnection)connection).CreateCommand();
                         else if (connection is SQLiteConnection) _command = ((SQLiteConnection)connection).CreateCommand();
+                        else if (connection is FbConnection) _command = ((FbConnection)connection).CreateCommand();
                         else _command = ((OleDbConnection)connection).CreateCommand();
 
                         _command.CommandTimeout = (CommandTimeout == -1 ? Connection.CommandTimeout : CommandTimeout);
@@ -3178,6 +3180,7 @@ model.ResultTable = query2.CopyToDataTable2();
                         else if (connection is OracleConnection) adapter = new OracleDataAdapter((OracleCommand)_command);
                         else if (connection is NpgsqlConnection) adapter = new NpgsqlDataAdapter((NpgsqlCommand)_command);
                         else if (connection is SQLiteConnection) adapter = new SQLiteDataAdapter((SQLiteCommand)_command);
+                        else if (connection is FbConnection) adapter = new FbDataAdapter((FbCommand)_command);
                         else adapter = new OleDbDataAdapter((OleDbCommand)_command);
                         ResultTable = new DataTable();
                         adapter.Fill(ResultTable);

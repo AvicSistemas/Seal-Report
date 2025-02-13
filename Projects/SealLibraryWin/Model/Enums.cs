@@ -32,7 +32,9 @@ namespace Seal.Model
         [Description("PostgreSQL")]
         PostgreSQL,
         [Description("SQLite")]
-        SQLite
+        SQLite,
+        [Description("Firebird")]
+        Firebird,
     }
 
     public enum ConnectionType
@@ -54,7 +56,9 @@ namespace Seal.Model
         [Description("PostgreSQL")]
         PostgreSQL,
         [Description("SQLite")]
-        SQLite
+        SQLite,
+        [Description("Firebird")]
+        Firebird
     }
 
     public enum ColumnType

@@ -20,6 +20,7 @@ using System.Transactions;
 using System.Globalization;
 using System.Data.SQLite;
 using System.Runtime.Intrinsics.X86;
+using FirebirdSql.Data.FirebirdClient;
 
 namespace Seal.Helpers
 {
@@ -169,6 +170,7 @@ namespace Seal.Helpers
                         else if (connection is OracleConnection) adapter = new OracleDataAdapter(sql, (OracleConnection)connection);
                         else if (connection is NpgsqlConnection) adapter = new NpgsqlDataAdapter(sql, (NpgsqlConnection)connection);
                         else if (connection is SQLiteConnection) adapter = new SQLiteDataAdapter(sql, (SQLiteConnection)connection);
+                        else if (connection is FbConnection) adapter = new FbDataAdapter(sql, (FbConnection)connection);
                         else adapter = new OleDbDataAdapter(sql, (OleDbConnection)connection);
                         adapter.SelectCommand.CommandTimeout = SelectTimeout;
                         adapter.Fill(table);
@@ -183,6 +185,7 @@ namespace Seal.Helpers
                         else if (connection is OracleConnection) cmd = new OracleCommand(sql, (OracleConnection)connection);
                         else if (connection is NpgsqlConnection) cmd = new NpgsqlCommand(sql, (NpgsqlConnection)connection);
                         else if (connection is SQLiteConnection) cmd = new SQLiteCommand(sql, (SQLiteConnection)connection);
+                        else if (connection is FbConnection) cmd = new FbCommand(sql, (FbConnection)connection);
                         else cmd = new OleDbCommand(sql, (OleDbConnection)connection);
                         cmd.CommandTimeout = SelectTimeout;
                         cmd.CommandType = CommandType.Text;
@@ -435,6 +438,16 @@ namespace Seal.Helpers
                 _defaultInsertStartCommand = "";
                 _defaultInsertEndCommand = "";
             }
+            else if (type == DatabaseType.Firebird)
+            {
+                //Default, tested on SQLServer...
+                _defaultColumnCharType = "varchar";
+                _defaultColumnNumericType = "numeric(18,5)";
+                _defaultColumnIntegerType = "integer";
+                _defaultColumnDateTimeType = "timestamp";
+                _defaultInsertStartCommand = "";
+                _defaultInsertEndCommand = "";
+            }
             else if (type == DatabaseType.SQLite)
             {
                 //Default, tested on SQLServer...
@@ -481,6 +494,7 @@ namespace Seal.Helpers
             else if (connection is OracleConnection) result = ((OracleConnection)connection).CreateCommand();
             else if (connection is NpgsqlConnection) result = ((NpgsqlConnection)connection).CreateCommand();
             else if (connection is SQLiteConnection) result = ((SQLiteConnection)connection).CreateCommand();
+            else if (connection is FbConnection) result = ((FbConnection)connection).CreateCommand();
             else result = ((OleDbConnection)connection).CreateCommand();
             result.CommandTimeout = SelectTimeout;
             return result;

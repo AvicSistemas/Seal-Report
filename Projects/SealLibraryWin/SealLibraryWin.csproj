@@ -50,6 +50,7 @@
     <PackageReference Include="Azure.Storage.Common" Version="12.20.1" />
     <PackageReference Include="Azure.Storage.Files.Shares" Version="12.19.1" />
     <PackageReference Include="Azure.Storage.Queues" Version="12.19.1" />
+    <PackageReference Include="FirebirdSql.Data.FirebirdClient" Version="10.3.2" />
     <PackageReference Include="FluentFTP" Version="50.1.0" />
 		<PackageReference Include="Microsoft.AnalysisServices.AdomdClient.NetCore.retail.amd64" Version="19.84.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
